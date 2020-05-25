@@ -1,4 +1,4 @@
-//бизнес логика для экрана
+//logic for screen
 package com.example.pictureoftheday.ui.main
 
 import androidx.lifecycle.ViewModelProviders

@@ -1,4 +1,4 @@
-//основная бизнес логика - загрузка фотографий, обработка ошибок и т.д.
+//main app logic - loading pictures, errors handling etc
 package com.example.pictureoftheday.ui.main
 
 import androidx.lifecycle.LiveData
@@ -38,7 +38,7 @@ class MainViewModel (
         })
     }
 }
-//загрузка данных с сайта api.nasa.gov
+//download data from api.nasa.gov
 data class PODServerResponseData(
     val date: String?,
     val explanation: String?,
@@ -49,23 +49,23 @@ data class PODServerResponseData(
     val url: String?
 )
 
-//интерфейс для выхода в интернет
+//interface for web
 interface PictureOfTheDayAPI {
     @GET("planetary/apod")
     fun getPictureOfTheDay(@Query("api_key") apiKey: String): Call<PODServerResponseData>
 }
-//обращаемся к api потом добавляем interface PictureOfTheDayAPI
+//call to api then add suffix in interface PictureOfTheDayAPI
 class PODRetrofitImpl {
     fun getApi(): PictureOfTheDayAPI {
-        val podRetrofit:Retrofit = Retrofit.Builder() //с помощью билдера создаем экземпляр класса
-            .baseUrl("https://api.nasa.gov/") // базовый урл к нему присоединяется end point planetary/apod
-            .addConverterFactory(  //конвертирует json ответ сервера в структуру данных data class PODServerResponseDatqa
+        val podRetrofit:Retrofit = Retrofit.Builder() //builder create class init
+            .baseUrl("https://api.nasa.gov/") // base url + end point planetary/apod
+            .addConverterFactory(  //convert server response in json into structure of data class PODServerResponseDatqa
                 GsonConverterFactory.create(
                     GsonBuilder().setLenient().create()
                 )
             )
             .build()
-        return podRetrofit.create(PictureOfTheDayAPI::class.java)//получаем готовую реализацию интерфейса в которой можно
-        //вызвать метод fun getPictureOfTheDay
+        return podRetrofit.create(PictureOfTheDayAPI::class.java)//gaining ready to use interface implementation
+        //and can call fun getPictureOfTheDay
     }
 }
